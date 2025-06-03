@@ -30,16 +30,7 @@ WORKDIR /app
 
 RUN mkdir -p /app/models
 
-RUN python3.11 -c "from ultralytics import YOLO; import shutil; \
-    # Download YOLOv8n
-    model = YOLO('yolov8n.pt'); \
-    shutil.move('yolov8n.pt', '/app/models/yolov8n.pt'); \
-    # Download YOLOv5n
-    model = YOLO('yolov5n.pt'); \
-    shutil.move('yolov5n.pt', '/app/models/yolov5n.pt'); \
-    # Download YOLOv10n
-    model = YOLO('yolov10n.pt'); \
-    shutil.move('yolov10n.pt', '/app/models/yolov10n.pt')"
+RUN python3.11 -c "from ultralytics import YOLO; import shutil; model = YOLO('yolov8n.pt'); shutil.move('yolov8n.pt', '/app/models/yolov8n.pt'); model = YOLO('yolov5n.pt'); shutil.move('yolov5n.pt', '/app/models/yolov5n.pt'); model = YOLO('yolov10n.pt'); shutil.move('yolov10n.pt', '/app/models/yolov10n.pt')"
 
 RUN ls -la /app/models/ && echo "All models downloaded successfully"
 
