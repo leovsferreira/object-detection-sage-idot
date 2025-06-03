@@ -65,7 +65,7 @@ class YOLOv5n(YOLOModel):
     """YOLOv5n model handler"""
     
     def __init__(self):
-        super().__init__("YOLOv5n", "/app/models/yolov5n.pt")
+        super().__init__("YOLOv5n", "/app/models/yolov5nu.pt")
 
 
 class YOLOv10n(YOLOModel):
