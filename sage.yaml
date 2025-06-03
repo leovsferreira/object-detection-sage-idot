@@ -1,16 +1,16 @@
 name: od-sage-idot
-version: 0.1.0
+version: 0.2.0
 description: uses different OD SOTA models to identify objects in the scene
 keywords: ""
 authors: Leonardo Ferreira
 collaborators: ""
 funding: ""
 license: ""
-homepage: https://github.com/leovsferreira/object-detection-sage-idot.git
+homepage: https://github.com/leovsferreira/od-sage-idot
 source:
   architectures:
     - linux/amd64
     - linux/arm64
-  url: https://github.com/leovsferreira/object-detection-sage-idot.git
+  url: https://github.com/leovsferreira/od-sage-idot
   branch: main
 namespace: lferr10

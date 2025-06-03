@@ -130,7 +130,7 @@ def main():
             traceback.print_exc()
             raise
     
-    # sys.exit(0)
+    sys.exit(0)
 
 
 if __name__ == "__main__":
