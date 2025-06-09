@@ -1,7 +1,6 @@
 import json
 import traceback
 import sys
-import os
 import pytz
 import time
 from datetime import datetime
@@ -28,21 +27,11 @@ def run_detection_cycle(plugin, models):
     snapshot_dt = datetime.fromtimestamp(timestamp / 1e9, tz=pytz.UTC)
     chicago_snapshot_time = snapshot_dt.astimezone(pytz.timezone('America/Chicago')).isoformat()
     
-    image_filename = f"detection_image_{int(timestamp)}.jpg"
-    snapshot.save(image_filename)
-    plugin.upload_file(image_filename, timestamp=timestamp)
-    
     all_results = {}
     for model_name, model_instance in models.items():
         try:
             detection_result = model_instance.detect(snapshot.data)
             all_results[model_name] = detection_result
-            
-            plugin.publish(
-                f"object.detections.{model_name.lower()}", 
-                json.dumps(detection_result), 
-                timestamp=timestamp
-            )
         except Exception as e:
             error_data = {
                 "model": model_name,
@@ -54,19 +43,13 @@ def run_detection_cycle(plugin, models):
                 json.dumps(error_data), 
                 timestamp=timestamp
             )
-            print(f"Error in {model_name}: {e}", file=sys.stderr)
-    
+
     combined_data = {
         "image_timestamp_chicago": chicago_snapshot_time,
         "image_timestamp_ns": timestamp,
         "models_results": all_results
     }
     plugin.publish("object.detections.all", json.dumps(combined_data), timestamp=timestamp)
-    
-    try:
-        os.remove(image_filename)
-    except:
-        pass
     
     return timestamp
 
@@ -85,8 +68,8 @@ def main():
             execution_times = []
             
             start_time = time.time()
-            max_duration = 55
-            interval = 20
+            max_duration = (24 * 60 * 60) - 3
+            interval = 3
             
             while (time.time() - start_time) < max_duration:
                 cycle_start = time.time()
@@ -126,8 +109,6 @@ def main():
             
             plugin.publish("plugin.error", json.dumps(error_data))
             
-            print(f"Critical error in plugin: {e}", file=sys.stderr)
-            traceback.print_exc()
             raise
     
     sys.exit(0)
